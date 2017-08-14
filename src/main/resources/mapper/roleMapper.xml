@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指定我们的到具体的bean -->
+<mapper namespace="com.lihao.dao.RoleDao">
+
+    <resultMap type="SysRole" id="SysRoleMapper">
+        <id property="roleID" column="role_id" javaType="int" jdbcType="INTEGER"/>
+        <result property="roleName" column="role_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="roleType" column="role_type" javaType="int" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--查找全部User-->
+    <select id="getAll" resultType="SysRole" resultMap="SysRoleMapper">
+        SELECT
+        role_id, role_name, role_type
+        FROM
+        sys_roles
+        WHERE
+        role_id &lt; 20000
+    </select>
+
+    <insert id="createRole" parameterType="SysRole" useGeneratedKeys="true" keyProperty="roleID">
+        INSERT INTO
+        sys_roles
+        (role_name, role_type)
+        VALUES
+        (#{roleName}, #{roleType})
+    </insert>
+
+    <delete id="deleteRole" parameterType="int">
+        DELETE FROM
+        sys_roles
+        WHERE
+        role_id = #{roleID}
+    </delete>
+
+    <insert id="addAuthToRole">
+        INSERT INTO
+        role_auth_conn
+        (role_id, auth_id)
+        VALUES
+        (#{0}, #{1})
+    </insert>
+
+    <delete id="removeAuthFromRole">
+        DELETE FROM
+        role_auth_conn
+        WHERE
+        role_id = #{0}
+        AND
+        auth_id = #{1}
+    </delete>
+
+    <delete id="clearAuthFromRole" parameterType="int">
+        DELETE FROM
+        role_auth_conn
+        WHERE
+        role_id = #{0}
+    </delete>
+
+    <select id="getAuthByRoleID" parameterType="int" resultMap="com.lihao.dao.AuthDao.SysAuthMapper">
+        SELECT
+        auth_id, auth_name, auth_type
+        FROM
+        sys_auths
+        WHERE
+        auth_id IN (
+        SELECT auth_id
+        FROM role_auth_conn
+        WHERE role_id = #{roleID}
+        )
+    </select>
+</mapper>

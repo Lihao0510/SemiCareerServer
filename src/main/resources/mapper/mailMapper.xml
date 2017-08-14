@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lihao.dao.EmailDao">
+    <resultMap id="EmailResultMap" type="InnerMail">
+        <constructor>
+            <idArg column="mail_id" jdbcType="INTEGER" javaType="_integer"/>
+        </constructor>
+        <result property="mailStatus" column="mail_status" javaType="int" jdbcType="INTEGER"/>
+        <result property="senderID" column="mail_from" javaType="int" jdbcType="INTEGER"/>
+        <result property="mailTag" column="mail_status" javaType="int" jdbcType="INTEGER"/>
+        <result property="mailTitle" column="mail_title" javaType="String" jdbcType="VARCHAR"/>
+        <result property="mailContent" column="mail_content" javaType="String" jdbcType="VARCHAR"/>
+        <result property="mailExtra" column="mail_extra" javaType="String" jdbcType="VARCHAR"/>
+        <result property="mailSendTime" column="send_time" javaType="String" jdbcType="TIMESTAMP"/>
+        <association property="sender" javaType="SysUser" column="mail_from" jdbcType="INTEGER"
+                     select="com.lihao.dao.UserDao.getUserBasicInfoByID"/>
+        <collection property="attachmentUrl" javaType="ArrayList" ofType="String" column="attachment_url">
+            <result column="attachment_url" jdbcType="VARCHAR" javaType="String"/>
+        </collection>
+        <collection property="carbonCopyList" ofType="SysUser" column="mail_id"
+                    select="com.lihao.dao.UserDao.getCopyUserBasicInfoByMailID">
+        </collection>
+        <collection property="receiverList" ofType="SysUser" column="mail_id"
+                    select="com.lihao.dao.UserDao.getReceiverUserBasicInfoByMailID">
+        </collection>
+    </resultMap>
+
+    <select id="getEmailListBySender" resultMap="EmailResultMap" parameterType="int">
+        SELECT
+        Mail.mail_id, mail_status, mail_tag, mail_from, mail_title, mail_content, mail_extra,
+        Attach.attachment_url
+        FROM
+        inner_email Mail
+        LEFT JOIN mail_attachment Attach ON Mail.mail_id = Attach.mail_id
+        WHERE
+        Mail.mail_from = #{id}
+    </select>
+
+</mapper>

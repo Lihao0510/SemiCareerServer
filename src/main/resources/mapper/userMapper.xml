@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指定我们的到具体的bean -->
+<mapper namespace="com.lihao.dao.UserDao">
+
+    <resultMap type="SysUser" id="SysUserMapper">
+        <id property="userId" column="user_id" javaType="int" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="userPwd" column="user_pwd" javaType="String" jdbcType="VARCHAR"/>
+        <result property="userPhone" column="user_phone" javaType="String" jdbcType="VARCHAR"/>
+        <result property="userEmail" column="user_email" javaType="String" jdbcType="VARCHAR"/>
+        <result property="userDesc" column="user_desc" javaType="String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" javaType="String" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="userProperty">
+        user_name, user_pwd, user_phone, user_email, user_desc
+    </sql>
+    <!--查找全部User-->
+    <select id="getAll" resultType="SysUser" resultMap="SysUserMapper">
+        SELECT
+        user_id, user_name, user_pwd, user_phone, user_email, user_desc, create_time
+        FROM
+        sys_users
+        WHERE user_id &lt; 20000
+    </select>
+
+    <select id="getUserBasicInfoByID" parameterType="int" resultMap="SysUserMapper" resultType="SysUser">
+        SELECT
+        user_id, user_name, user_email, user_desc
+        FROM
+        sys_users
+        WHERE user_id = #{id}
+    </select>
+    <select id="getReceiverUserBasicInfoByMailID" parameterType="int" resultMap="SysUserMapper" resultType="SysUser">
+        SELECT
+        user_id, user_name, user_email, user_desc
+        FROM
+        sys_users
+        WHERE user_id IN
+        (
+        SELECT
+        receiver_id
+        FROM
+        mail_receiver
+        WHERE
+        mail_id = #{id}
+        )
+    </select>
+    <select id="getCopyUserBasicInfoByMailID" parameterType="int" resultMap="SysUserMapper" resultType="SysUser">
+        SELECT
+        user_id, user_name, user_email, user_desc
+        FROM
+        sys_users
+        WHERE user_id IN
+        (
+        SELECT
+        cc_id
+        FROM
+        mail_cc
+        WHERE
+        mail_id = #{id}
+        )
+    </select>
+
+    <select id="getUserByPhone" parameterType="String" resultMap="SysUserMapper">
+        SELECT
+        user_id, user_name, user_pwd, user_phone, user_email, user_desc, create_time
+        FROM
+        sys_users
+        WHERE user_phone = #{userPhone}
+    </select>
+
+    <insert id="createUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO
+        sys_users
+        (<include refid="userProperty"/>)
+        VALUES
+        (#{userName}, #{userPwd}, #{userPhone}, #{userEmail}, #{userDesc})
+    </insert>
+
+    <update id="updateUser" parameterType="SysUser">
+        UPDATE sys_users
+        SET
+        user_name = #{userName},
+        user_pwd = #{userPwd},
+        user_phone = #{userPhone},
+        user_email = #{userEmail},
+        user_desc = #{userDesc},
+        WHERE
+        user_id = #{userID}
+
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM
+        sys_users
+        WHERE
+        user_id = #{userID}
+    </delete>
+
+    <insert id="addRoleToUser">
+        INSERT INTO
+        user_role_conn
+        (user_id, role_id)
+        VALUES
+        (#{0}, #{1})
+    </insert>
+
+    <select id="getUserRoles" parameterType="int" resultMap="com.lihao.dao.RoleDao.SysRoleMapper">
+        SELECT
+        role_id, role_name, role_type
+        FROM
+        sys_roles
+        WHERE
+        role_id IN
+        (
+        SELECT
+        role_id
+        FROM
+        user_role_conn
+        WHERE
+        user_id = #{userID}
+        )
+    </select>
+
+    <delete id="removeRoleFromUser">
+        DELETE FROM
+        user_role_conn
+        WHERE
+        user_id = #{0}
+        AND
+        role_id = #{1}
+    </delete>
+
+    <delete id="removeAllRolesFromUser" parameterType="int">
+        DELETE FROM
+        user_role_conn
+        WHERE
+        user_id = #{0}
+    </delete>
+
+    <select id="getAllAuthByUserID" parameterType="int" resultMap="com.lihao.dao.AuthDao.SysAuthMapper">
+        SELECT
+        auth_id, auth_name, auth_type
+        FROM
+        sys_auths
+        WHERE
+        auth_id IN(
+        SELECT auth_id
+        FROM
+        role_auth_conn
+        WHERE
+        role_id IN(
+        SELECT role_id
+        FROM
+        user_role_conn
+        WHERE
+        user_id = #{userID}
+        ))
+    </select>
+
+</mapper>

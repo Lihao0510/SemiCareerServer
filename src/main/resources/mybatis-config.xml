@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="com.lihao.entity.SysUser" alias="SysUser"/>
+        <typeAlias type="com.lihao.entity.SysAuth" alias="SysAuth"/>
+        <typeAlias type="com.lihao.entity.SysRole" alias="SysRole"/>
+        <typeAlias type="com.lihao.entity.InnerMail" alias="InnerMail"/>
+        <typeAlias type="com.lihao.entity.CareerJob" alias="CareerJob"/>
+        <typeAlias type="com.lihao.entity.CareerCompany" alias="CareerCompany"/>
+        <typeAlias type="com.lihao.entity.EnterpriseNotice" alias="EnterpriseNotice"/>
+    </typeAliases>
+</configuration>

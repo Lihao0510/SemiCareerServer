@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lihao.dao.CareerDao">
+
+    <resultMap id="CareerJobMap" type="CareerJob">
+        <id column="job_id" property="jobID" javaType="int" jdbcType="INTEGER"/>
+        <result column="job_company" property="companyID" javaType="int" jdbcType="INTEGER"/>
+        <result column="job_cname" property="jobCName" javaType="String" jdbcType="VARCHAR"/>
+        <result column="city_name" property="cityName" javaType="String" jdbcType="VARCHAR"/>
+        <result column="city_code" property="cityCode" javaType="String" jdbcType="VARCHAR"/>
+        <result column="district_name" property="districtName" javaType="String" jdbcType="VARCHAR"/>
+        <result column="district_code" property="districCode" javaType="String" jdbcType="VARCHAR"/>
+        <result column="job_education" property="jobEdu" javaType="int" jdbcType="INTEGER"/>
+        <result column="job_experience" property="jobExp" javaType="int" jdbcType="INTEGER"/>
+        <result column="job_address" property="jobAddress" javaType="String" jdbcType="VARCHAR"/>
+        <result column="job_describe" property="jobDescribe" javaType="String" jdbcType="VARCHAR"/>
+        <result column="job_salary" property="jobSalary" javaType="String" jdbcType="VARCHAR"/>
+        <result column="job_attract" property="jobAttract" javaType="String" jdbcType="VARCHAR"/>
+        <result column="job_time" property="jobTime" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="CareerCompanyMap" type="CareerCompany">
+
+    </resultMap>
+
+</mapper>

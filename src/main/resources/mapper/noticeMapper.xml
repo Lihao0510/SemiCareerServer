@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lihao.dao.NoticeDao">
+
+    <resultMap id="NoticeMap" type="EnterpriseNotice">
+        <id column="id" jdbcType="INTEGER" property="noticeID" javaType="int"/>
+        <result property="noticeType" column="notice_type" javaType="int" jdbcType="INTEGER"/>
+        <result property="noticePicUrl" column="notice_pic" javaType="String" jdbcType="VARCHAR"/>
+        <result property="noticeAuthor" column="notice_author" javaType="String" jdbcType="VARCHAR"/>
+        <result property="noticeTitle" column="notice_title" javaType="String" jdbcType="VARCHAR"/>
+        <result property="noticeContent" column="notice_content" javaType="String" jdbcType="VARCHAR"/>
+        <result property="noticeDate" column="notice_date" javaType="String" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getAllNotice" resultMap="NoticeMap" resultType="EnterpriseNotice">
+        SELECT * FROM
+        enterprise_notice
+    </select>
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指定我们的到具体的bean -->
+<mapper namespace="com.lihao.dao.AuthDao">
+
+    <resultMap type="SysAuth" id="SysAuthMapper">
+        <id property="authID" column="auth_id" javaType="int" jdbcType="INTEGER"/>
+        <result property="authName" column="auth_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="authType" column="auth_type" javaType="int" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--查找全部User-->
+    <select id="getAll" resultType="SysAuth" resultMap="SysAuthMapper">
+        SELECT
+        auth_id, auth_name, auth_type
+        FROM
+        sys_auths
+        WHERE auth_id &lt; 20000
+    </select>
+
+    <insert id="createAuth" parameterType="SysAuth" useGeneratedKeys="true" keyProperty="authID">
+        INSERT INTO
+        sys_auths(auth_name, auth_type)
+        VALUES
+        (#{authName}, #{authType})
+    </insert>
+
+    <delete id="deleteAuth" parameterType="int">
+        DELETE FROM
+        sys_auths
+        WHERE
+        auth_id = #{authID}
+    </delete>
+</mapper>

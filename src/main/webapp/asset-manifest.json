@@ -1,0 +1,22 @@
+{
+  "app.js": "static/js/app.69e689b2.chunk.js",
+  "app.js.map": "static/js/app.69e689b2.chunk.js.map",
+  "appuserpage.js": "static/js/appuserpage.362e75a9.chunk.js",
+  "appuserpage.js.map": "static/js/appuserpage.362e75a9.chunk.js.map",
+  "common.js": "static/js/common.0ce46bd0.js",
+  "common.js.map": "static/js/common.0ce46bd0.js.map",
+  "forumpage.js": "static/js/forumpage.a939f33d.chunk.js",
+  "forumpage.js.map": "static/js/forumpage.a939f33d.chunk.js.map",
+  "local_news.js": "static/js/local_news.101496e2.chunk.js",
+  "local_news.js.map": "static/js/local_news.101496e2.chunk.js.map",
+  "main.css": "static/css/main.374808d7.css",
+  "main.css.map": "static/css/main.374808d7.css.map",
+  "main.js": "static/js/main.95f1490a.js",
+  "main.js.map": "static/js/main.95f1490a.js.map",
+  "systempage.js": "static/js/systempage.18ea035c.chunk.js",
+  "systempage.js.map": "static/js/systempage.18ea035c.chunk.js.map",
+  "sysuserpage.js": "static/js/sysuserpage.18170bb1.chunk.js",
+  "sysuserpage.js.map": "static/js/sysuserpage.18170bb1.chunk.js.map",
+  "weixin_news.js": "static/js/weixin_news.0c416167.chunk.js",
+  "weixin_news.js.map": "static/js/weixin_news.0c416167.chunk.js.map"
+}
