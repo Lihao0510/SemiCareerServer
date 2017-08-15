@@ -13,15 +13,109 @@
         <result column="district_code" property="districCode" javaType="String" jdbcType="VARCHAR"/>
         <result column="job_education" property="jobEdu" javaType="int" jdbcType="INTEGER"/>
         <result column="job_experience" property="jobExp" javaType="int" jdbcType="INTEGER"/>
+        <result column="job_status" property="jobStatus" javaType="int" jdbcType="INTEGER"/>
+        <result column="job_type" property="jobType" javaType="int" jdbcType="INTEGER"/>
         <result column="job_address" property="jobAddress" javaType="String" jdbcType="VARCHAR"/>
         <result column="job_describe" property="jobDescribe" javaType="String" jdbcType="VARCHAR"/>
         <result column="job_salary" property="jobSalary" javaType="String" jdbcType="VARCHAR"/>
         <result column="job_attract" property="jobAttract" javaType="String" jdbcType="VARCHAR"/>
         <result column="job_time" property="jobTime" javaType="String" jdbcType="VARCHAR"/>
+        <association property="companyDetail" jdbcType="INTEGER" javaType="CareerJob" column="job_company"
+                     select="getCompanyBriefByID">
+        </association>
     </resultMap>
 
     <resultMap id="CareerCompanyMap" type="CareerCompany">
-
+        <id column="company_id" property="companyID" javaType="int" jdbcType="INTEGER"/>
+        <result column="company_cname" property="companyName" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_desc" property="companyDesc" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_career" property="companyCareer" javaType="int" jdbcType="INTEGER"/>
+        <result column="company_tag" property="companyTag" javaType="int" jdbcType="INTEGER"/>
+        <result column="company_address" property="companyAddress" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_owner" property="companyOwner" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_phone" property="companyPhone" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_introduce" property="companyIntro" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_website" property="companyWebsite" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_logo" property="companyLogo" javaType="String" jdbcType="VARCHAR"/>
+        <result column="company_type" property="companyType" javaType="int" jdbcType="INTEGER"/>
     </resultMap>
+
+    <select id="getCompanyDetailByID" resultMap="CareerCompanyMap" resultType="CareerCompany" parameterType="int">
+        SELECT
+          *
+        FROM
+          career_company
+        WHERE
+          company_id = #{0}
+    </select>
+
+    <select id="getCompanyBriefByID" resultMap="CareerCompanyMap" resultType="CareerCompany" parameterType="int">
+        SELECT
+          company_id, company_logo, company_cname, company_career, company_type, company_desc
+        FROM
+          career_company
+        WHERE
+          company_id = #{0}
+    </select>
+
+    <select id="getJobDetailByID" resultMap="CareerJobMap" resultType="CareerJob" parameterType="int">
+        SELECT
+          *
+        FROM
+          career_job
+        WHERE
+          job_id = #{0}
+    </select>
+
+    <select id="pageQueryJobList" resultMap="CareerJobMap" resultType="CareerJob" parameterType="int">
+        SELECT
+          JB.job_id, JB.city_name, JB.city_code, JB.district_name, JB.district_code, JB.job_time,
+          JB.job_education, JB.job_experience, JB.job_salary, JB.job_status, JB.job_cname, JB.job_company
+        FROM
+          career_job JB
+        WHERE
+          JB.job_status &lt;&gt; 4
+        ORDER BY
+          JB.job_time DESC
+        LIMIT
+          #{0}, #{1}
+    </select>
+
+    <select id="pageQueryCompanyList" resultMap="CareerCompanyMap" resultType="CareerCompany" parameterType="int">
+        SELECT
+          company_id, company_cname, company_career, company_logo, company_type, company_tag, company_desc
+        FROM
+          career_company
+        WHERE
+          company_tag &lt;&gt; 4
+        LIMIT
+          #{0}, #{1}
+    </select>
+
+    <select id="getJobListByCompanyID" resultMap="CareerJobMap" resultType="CareerJob" parameterType="int">
+        SELECT
+          JB.job_id, JB.city_name, JB.city_code, JB.district_name, JB.district_code, JB.job_time,
+          JB.job_education, JB.job_experience, JB.job_salary, JB.job_status, JB.job_cname, JB.job_company
+        FROM
+          career_job JB
+        WHERE
+          JB.job_status &lt;&gt; 4 AND JB.job_company = #{0}
+        ORDER BY
+          JB.job_time DESC
+    </select>
+
+    <select id="pageQueryJobListByCity" resultMap="CareerJobMap">
+        SELECT
+          JB.job_id, JB.city_name, JB.city_code, JB.district_name, JB.district_code, JB.job_time,
+          JB.job_education, JB.job_experience, JB.job_salary, JB.job_status, JB.job_cname, JB.job_company
+        FROM
+          career_job JB
+        WHERE
+          JB.job_status &lt;&gt; 4 AND JB.city_code = #{0}
+        ORDER BY
+          JB.job_time DESC
+        LIMIT
+          #{1}, #{2}
+    </select>
 
 </mapper>

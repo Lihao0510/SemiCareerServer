@@ -20,6 +20,24 @@ public class CareerJob {
     public String jobSalary;
     public String jobTime;
     public String jobAttract;
+    public int jobStatus;
+    public int jobType;
+
+    public int getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(int jobType) {
+        this.jobType = jobType;
+    }
+
+    public int getJobStatus() {
+        return jobStatus;
+    }
+
+    public void setJobStatus(int jobStatus) {
+        this.jobStatus = jobStatus;
+    }
 
     public int getJobID() {
         return jobID;
