@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lihao.dao.ResumeDao">
+    <resultMap id="CareerResumeMap" type="CareerResume">
+        <id column="resume_id" property="resumeID" javaType="int" jdbcType="INTEGER"/>
+        <result column="user_id" property="userID" javaType="int" jdbcType="INTEGER"/>
+        <result column="user_sign" property="userSign" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_head" property="userHead" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_advance" property="userAdvance" javaType="String" jdbcType="VARCHAR"/>
+        <result column="intent_city" property="intentCity" javaType="String" jdbcType="VARCHAR"/>
+        <result column="intent_business" property="intentBusiness" javaType="int" jdbcType="INTEGER"/>
+        <result column="intent_job" property="intentJob" javaType="String" jdbcType="VARCHAR"/>
+        <result column="career_year" property="careerYear" javaType="int" jdbcType="INTEGER"/>
+        <result column="highist_degree" property="highistDegree" javaType="int" jdbcType="INTEGER"/>
+        <result column="user_desc" property="userDesc" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_school" property="userSchool" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_professor" property="userProfessor" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_birth" property="userBirth" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_attach" property="userAttach" javaType="String" jdbcType="VARCHAR"/>
+        <result column="user_sex" property="userSex" javaType="int" jdbcType="INTEGER"/>
+        <association property="userMessage" column="user_id" javaType="SysUser"
+                     select="com.lihao.dao.UserDao.getUserBasicInfoByID"/>
+    </resultMap>
+
+    <select id="getResumeByUserID" resultMap="CareerResumeMap" parameterType="int">
+        SELECT
+          *
+        FROM
+          user_resume
+        WHERE
+          user_id = #{userID}
+    </select>
+
+    <insert id="createResume" useGeneratedKeys="true" keyProperty="resumeID" parameterType="CareerResume">
+        INSERT INTO
+          user_resume(
+            user_id, user_sign, user_head, user_advance, intent_city,
+            intent_business, intent_job, career_year, highist_degree, user_desc,
+            user_school, user_professor, user_birth, user_attach, user_sex
+          )
+        VALUES (
+          #{userID}, #{userSign}, #{userHead}, #{userAdvance}, #{intentCity},
+          #{intentBusiness}, #{intentJob}, #{careerYear}, #{highistDegree}, #{userDesc}, #{userSchool},
+          #{userProfessor}, #{userBirth}, #{userAttach}, #{userSex}
+        )
+    </insert>
+
+    <update id="updateResume" parameterType="CareerResume">
+        UPDATE
+            user_resume
+        SET
+            user_id = #{userID},
+            user_sign = #{userSign},
+            user_head = #{userHead},
+            user_advance = #{userAdvance},
+            intent_city = #{intentCity},
+            intent_business = #{intentBusiness},
+            intent_job = #{intentJob},
+            career_year = #{careerYear},
+            highist_degree = #{highistDegree},
+            user_desc = #{userDesc},
+            user_school = #{userSchool},
+            user_professor = #{userProfessor},
+            user_birth = #{userBirth},
+            user_attach = #{userAttach},
+            user_sex = #{userSex}
+        WHERE
+          resume_id = #{resumeID}
+    </update>
+
+    <delete id="deleteResume" parameterType="int">
+        DELETE FROM
+          user_resume
+        WHERE
+          resume_id = #{resumeID}
+    </delete>
+</mapper>

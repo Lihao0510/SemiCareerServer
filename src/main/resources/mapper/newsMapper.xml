@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lihao.dao.NewsDao">
+    <resultMap id="CareerNewsMap" type="CareerNews">
+        <id column="news_id" property="newsID" javaType="int" jdbcType="INTEGER"/>
+        <result column="news_title" property="newsTitle" javaType="String" jdbcType="VARCHAR"/>
+        <result column="news_pic" property="newsPic" javaType="String" jdbcType="VARCHAR"/>
+        <result column="news_content" property="newsContent" javaType="String" jdbcType="VARCHAR"/>
+        <result column="news_author" property="newsAuthor" javaType="String" jdbcType="VARCHAR"/>
+        <result column="news_time" property="newsTime" javaType="String" jdbcType="VARCHAR"/>
+        <result column="news_type" property="newsType" javaType="int" jdbcType="INTEGER"/>
+        <result column="news_tag" property="newsTag" javaType="int" jdbcType="INTEGER"/>
+        <result column="news_donate" property="newsDonate" javaType="String" jdbcType="VARCHAR"/>
+        <collection property="newsComments" column="comment_news_id" ofType="NewsComment"
+                    select="getCommentsByNewsID"/>
+    </resultMap>
+
+    <resultMap id="NewsCommentMap" type="NewsComment">
+        <id column="comment_id" property="commentID" javaType="int" jdbcType="INTEGER"/>
+        <result column="news_id" property="newsID" javaType="int" jdbcType="INTEGER"/>
+        <result column="comment_user" property="commentUser" javaType="int" jdbcType="VARCHAR"/>
+        <result column="comment_text" property="commentText" javaType="String" jdbcType="VARCHAR"/>
+        <result column="comment_time" property="commentTime" javaType="String" jdbcType="VARCHAR"/>
+        <result column="comment_agree" property="commentAgree" javaType="int" jdbcType="INTEGER"/>
+        <association property="userMessage" javaType="SysUser" column="comment_user"
+                     select="com.lihao.dao.UserDao.getUserBasicInfoByID"/>
+    </resultMap>
+
+    <select id="queryNewsByCondition" resultMap="CareerNewsMap">
+        SELECT
+        news_id, news_title, news_pic, news_time, news_author, news_type, news_tag
+        FROM
+        career_news
+        WHERE
+        news_tag &lt;&gt; 4
+        <if test="newsType != null">
+            AND news_type = #{newsType}
+        </if>
+        <if test="newsTag != null">
+            AND news_tag = #{newsTag}
+        </if>
+        <if test="newsAuthor != null">
+            AND news_author = #{newsAuthor}
+        </if>
+        ORDER BY
+        news_time DESC
+        LIMIT
+        #{start}, #{limit}
+    </select>
+    <select id="getNewsByID" resultMap="CareerNewsMap">
+        SELECT
+          *, news_id AS comment_news_id
+        FROM
+          career_news
+        WHERE
+          news_id = #{newsID}
+    </select>
+    <insert id="addCommentByNewsID" useGeneratedKeys="true">
+        INSERT INTO
+          news_comment(news_id, comment_user, comment_text)
+        VALUES (
+          #{newsID}, #{userID}, #{commentText}
+        )
+    </insert>
+    <select id="getCommentsByNewsID" resultMap="NewsCommentMap" parameterType="int">
+        SELECT
+          comment_id, comment_user, comment_text, comment_time, comment_agree
+        FROM
+          news_comment
+        WHERE
+          news_id = #{newsID}
+        ORDER BY
+          comment_time DESC
+    </select>
+</mapper>

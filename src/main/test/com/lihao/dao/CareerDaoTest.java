@@ -9,7 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -67,6 +69,33 @@ public class CareerDaoTest {
         List<CareerCompany> companyList = careerDao.pageQueryCompanyList(0, 2);
         assertNotNull(companyList);
         System.out.println(companyList);
+    }
+
+    @Test
+    public void testSearchJobList() throws Exception {
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("start", 0);
+        params.put("limit", 12);
+        params.put("cityCode", "0755");
+        params.put("searchLine", "mes");
+
+        List<CareerJob> jobList = careerDao.searchJobListByCondition(params);
+        assertNotNull(jobList);
+        System.out.println("结果集" + jobList);
+    }
+
+    @Test
+    public void testSearchCompanyList() throws Exception {
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("start", 0);
+        params.put("limit", 12);
+        params.put("companyType", 3);
+
+        List<CareerCompany> companyList = careerDao.searchCompanyListByName(params);
+        assertNotNull(companyList);
+        System.out.println("结果集" + companyList);
     }
 
 

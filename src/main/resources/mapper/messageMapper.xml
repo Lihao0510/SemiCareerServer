@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lihao.dao.MessageDao">
+
+    <resultMap id="CareerMessageMap" type="CareerMessage">
+        <id column="message_id" property="messageID" javaType="int" jdbcType="INTEGER"/>
+        <result column="message_receiver" property="messageReceiver" javaType="int" jdbcType="INTEGER"/>
+        <result column="message_sender" property="messageSender" javaType="int" jdbcType="INTEGER"/>
+        <result column="message_company" property="messageCompany" javaType="int" jdbcType="INTEGER"/>
+        <result column="message_type" property="messageType" javaType="int" jdbcType="INTEGER"/>
+        <result column="message_tag" property="messageTag" javaType="int" jdbcType="INTEGER"/>
+        <result column="message_title" property="messageTitle" javaType="String" jdbcType="VARCHAR"/>
+        <result column="message_text" property="messageText" javaType="String" jdbcType="VARCHAR"/>
+        <result column="message_url" property="messageUrl" javaType="String" jdbcType="VARCHAR"/>
+        <result column="message_time" property="messageTime" javaType="String" jdbcType="VARCHAR"/>
+        <association property="senderMessage" javaType="SysUser" column="message_sender"
+                     select="com.lihao.dao.UserDao.getUserBasicInfoByID"/>
+        <association property="receiverMessage" javaType="SysUser" column="message_receiver"
+                     select="com.lihao.dao.UserDao.getUserBasicInfoByID"/>
+    </resultMap>
+
+    <select id="queryMessageByCondition" resultMap="CareerMessageMap">
+        SELECT
+        *
+        FROM
+        career_message
+        WHERE
+        message_tag &lt;&gt; 4
+        <if test="messageReceiver != null">
+            AND message_receiver = #{messageReceiver}
+        </if>
+        <if test="messageSender != null">
+            AND message_sender = #{messageSender}
+        </if>
+        <if test="messageType != null">
+            AND message_type = #{messageType}
+        </if>
+        ORDER BY
+        message_time DESC
+        LIMIT
+        #{start}, #{limit}
+    </select>
+
+    <insert id="writeMessage" useGeneratedKeys="true" parameterType="CareerMessage" keyProperty="messageID">
+        INSERT INTO
+          career_message(message_sender, message_receiver, message_company, message_title, message_text, message_type, message_url, message_tag)
+        VALUES (
+            #{messageSender}, #{messageReceiver}, #{messageCompany}, #{messageTitle}, #{messageText}, #{messageType}, #{messageUrl}, #{messageTag}
+        )
+    </insert>
+
+    <delete id="deleteMessageByID" parameterType="int">
+        DELETE FROM
+          career_message
+        WHERE
+          message_id = #{messageID}
+    </delete>
+
+</mapper>

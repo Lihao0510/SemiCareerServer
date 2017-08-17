@@ -14,8 +14,9 @@ import java.util.List;
 @Component
 public class LoginCut {
 
-    @Pointcut("execution(* com.lihao.service.*.*(..))")
+    @Pointcut("execution(* com.lihao.service.UserService.*(..))")
     void anyMethod() {
+
     }
 
     @Before("anyMethod()")//声明前置通知
