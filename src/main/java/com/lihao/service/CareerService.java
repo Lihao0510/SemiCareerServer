@@ -4,6 +4,7 @@ import com.lihao.dao.CareerDao;
 import com.lihao.entity.CareerCompany;
 import com.lihao.entity.CareerJob;
 import com.lihao.entity.ResponseObject;
+import com.lihao.util.ResponseUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -35,10 +36,9 @@ public class CareerService {
         try {
             jobList = careerDao.pageQueryJobList(pageNum * pageSize, pageSize);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        returnList(jobList, result, "没有更多的职位了");
+        ResponseUtil.returnList(jobList, result, "没有更多的职位了");
         return result;
     }
 
@@ -53,16 +53,9 @@ public class CareerService {
         try {
             job = careerDao.getJobDetailByID(jobID);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        if (job != null && job.jobID == jobID) {
-            result.setStatus(1);
-            result.setResult(job);
-        } else {
-            result.setStatus(0);
-            result.setErrorMsg("该职位不存在!");
-        }
+        ResponseUtil.returnObject(job, result, "该职位不存在!");
         return result;
     }
 
@@ -77,16 +70,9 @@ public class CareerService {
         try {
             companyList = careerDao.pageQueryCompanyList(pageNum * pageSize, pageSize);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        if (companyList != null && companyList.size() > 0) {
-            result.setStatus(1);
-            result.setResult(companyList);
-        } else {
-            result.setStatus(0);
-            result.setErrorMsg("没有更多的公司了!");
-        }
+        ResponseUtil.returnList(companyList, result, "没有更多的公司了");
         return result;
     }
 
@@ -101,16 +87,9 @@ public class CareerService {
         try {
             company = careerDao.getCompanyDetailByID(companyID);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        if (company != null && company.companyID == companyID) {
-            result.setStatus(1);
-            result.setResult(company);
-        } else {
-            result.setStatus(0);
-            result.setErrorMsg("该公司不存在!");
-        }
+        ResponseUtil.returnObject(company, result, "该公司不存在!");
         return result;
     }
 
@@ -125,16 +104,9 @@ public class CareerService {
         try {
             jobList = careerDao.getJobListByCompanyID(companyID);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        if (jobList != null && jobList.size() > 0) {
-            result.setStatus(1);
-            result.setResult(jobList);
-        } else {
-            result.setStatus(0);
-            result.setErrorMsg("该公司没有发布职位!");
-        }
+        ResponseUtil.returnList(jobList, result, "该公司没有发布职位!");
         return result;
     }
 
@@ -158,10 +130,9 @@ public class CareerService {
         try {
             jobList = careerDao.searchJobListByCondition(queryMap);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        returnList(jobList, result, "没有更多的职位了!");
+        ResponseUtil.returnList(jobList, result, "没有更多的职位了!");
         return result;
     }
 
@@ -198,21 +169,12 @@ public class CareerService {
         try {
             companyList = careerDao.searchCompanyListByName(queryMap);
         } catch (DataAccessException e) {
-            result.setStatus(4);
-            result.setErrorMsg("发生错误!");
+            ResponseUtil.returnError(result);
         }
-        returnList(companyList, result, "没有更多的公司了!");
+        ResponseUtil.returnList(companyList, result, "没有更多的公司了!");
         return result;
     }
 
-    private <T> void returnList(List<T> list, ResponseObject result, String error) {
-        if (list != null && list.size() > 0) {
-            result.setStatus(1);
-            result.setResult(list);
-        } else {
-            result.setStatus(0);
-            result.setErrorMsg("没有更多的职位了!");
-        }
-    }
+
 
 }

@@ -56,4 +56,10 @@ public class MessageDaoTest {
     public void testDeleteMessageByID() throws Exception {
         int result = messageDao.deleteMessageByID(100003);
     }
+
+    @Test
+    public void testGetMessageCountByTag() throws Exception {
+        int result = messageDao.getMessageCountByTag(10002, 0);
+        System.out.println(result);
+    }
 }

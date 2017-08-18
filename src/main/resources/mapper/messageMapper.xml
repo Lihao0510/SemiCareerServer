@@ -37,10 +37,33 @@
         <if test="messageType != null">
             AND message_type = #{messageType}
         </if>
+        <if test="messageTag != null">
+            AND message_tag = #{messageTag}
+        </if>
         ORDER BY
         message_time DESC
         LIMIT
         #{start}, #{limit}
+    </select>
+
+    <select id="getMessageDetailByID" parameterType="int">
+        SELECT
+          *
+        FROM
+          career_message
+        WHERE
+          message_id = #{messageID}
+    </select>
+
+    <select id="getMessageCountByTag" parameterType="int" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM
+          career_message
+        WHERE
+          message_receiver = #{0}
+          AND
+          message_tag = #{1}
     </select>
 
     <insert id="writeMessage" useGeneratedKeys="true" parameterType="CareerMessage" keyProperty="messageID">
@@ -50,6 +73,15 @@
             #{messageSender}, #{messageReceiver}, #{messageCompany}, #{messageTitle}, #{messageText}, #{messageType}, #{messageUrl}, #{messageTag}
         )
     </insert>
+
+    <update id="setMessageStatusByID" parameterType="int">
+        UPDATE
+          career_message
+        SET
+          message_tag = #{1}
+        WHERE
+          message_id = #{0}
+    </update>
 
     <delete id="deleteMessageByID" parameterType="int">
         DELETE FROM

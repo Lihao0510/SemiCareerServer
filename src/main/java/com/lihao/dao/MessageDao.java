@@ -18,4 +18,10 @@ public interface MessageDao {
 
     int deleteMessageByID(int messageID);
 
+    CareerMessage getMessageDetailByID(int messageID);
+
+    int setMessageStatusByID(int messageID, int messageTag);
+
+    int getMessageCountByTag(int receiverID, int messageTag);
+
 }
