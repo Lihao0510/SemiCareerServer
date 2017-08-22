@@ -110,6 +110,32 @@ public class CareerService {
         return result;
     }
 
+    public ResponseObject searchRecommandJobByCondition(Map<String, Object> params) {
+        HashMap<String, Object> queryMap = new HashMap<String, Object>();
+        int pageNum = Integer.parseInt((String) params.get("pageNum"));
+        int pageSize = Integer.parseInt((String) params.get("pageSize"));
+        queryMap.put("start", pageNum * pageSize);
+        queryMap.put("limit", pageSize);
+
+        String jobType = (String) params.get("jobType");
+        String cityCode = (String) params.get("cityCode");
+        if (jobType != null && !jobType.equals("")) {
+            queryMap.put("jobType", jobType);
+        }
+        if (cityCode != null && !cityCode.equals("")) {
+            queryMap.put("cityCode", cityCode);
+        }
+        ResponseObject result = new ResponseObject();
+        List<CareerJob> jobList = null;
+        try {
+            jobList = careerDao.searchRecommandJobByCondition(queryMap);
+        } catch (DataAccessException e) {
+            ResponseUtil.returnError(result);
+        }
+        ResponseUtil.returnList(jobList, result, "没有更多的职位了!");
+        return result;
+    }
+
     public ResponseObject searchJobListByCondition(Map<String, Object> params) {
         HashMap<String, Object> queryMap = new HashMap<String, Object>();
         int pageNum = Integer.parseInt((String) params.get("pageNum"));
@@ -174,7 +200,6 @@ public class CareerService {
         ResponseUtil.returnList(companyList, result, "没有更多的公司了!");
         return result;
     }
-
 
 
 }

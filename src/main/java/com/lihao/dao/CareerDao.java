@@ -47,4 +47,14 @@ public interface CareerDao {
     * */
     List<CareerCompany> searchCompanyListByName(Map<String, Object> searchMap);
 
+
+    /*
+    * @param searchMap需要包含的参数为:
+    * start: 开始行数
+    * limit: 返回的最大行数
+    * cityCode: (可选)城市编码
+    * jobType: (可选)查询字符串
+    * */
+    List<CareerJob> searchRecommandJobByCondition(Map<String, Object> searchMap);
+
 }

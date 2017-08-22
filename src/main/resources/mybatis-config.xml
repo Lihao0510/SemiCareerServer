@@ -15,5 +15,6 @@
         <typeAlias type="com.lihao.entity.NewsComment" alias="NewsComment"/>
         <typeAlias type="com.lihao.entity.CareerMessage" alias="CareerMessage"/>
         <typeAlias type="com.lihao.entity.CareerResume" alias="CareerResume"/>
+        <typeAlias type="com.lihao.entity.CareerLoginMessage" alias="CareerLoginMessage"/>
     </typeAliases>
 </configuration>

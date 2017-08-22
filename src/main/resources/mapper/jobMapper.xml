@@ -140,7 +140,8 @@
 
     <select id="searchCompanyListByName" resultMap="CareerCompanyMap">
         SELECT
-        company_id, company_cname, company_career, company_logo, company_type, company_tag, company_desc, company_address
+        company_id, company_cname, company_career, company_logo, company_type, company_tag, company_desc,
+        company_address
         FROM
         career_company
         WHERE
@@ -157,6 +158,26 @@
         <if test="companyCity != null">
             AND company_city = #{companyCity}
         </if>
+        LIMIT
+        #{start}, #{limit}
+    </select>
+
+    <select id="searchRecommandJobByCondition" resultMap="CareerJobMap">
+        SELECT
+        JB.job_id, JB.city_name, JB.city_code, JB.district_name, JB.district_code, JB.job_time,
+        JB.job_education, JB.job_experience, JB.job_salary, JB.job_status, JB.job_cname, JB.job_company
+        FROM
+        career_job JB
+        WHERE
+        JB.job_status &lt;&gt; 4
+        <if test="cityCode != null">
+            AND JB.city_code = #{cityCode}
+        </if>
+        <if test="jobType != null">
+            AND JB.job_type LIKE "%"#{jobType}"%"
+        </if>
+        ORDER BY
+        rand()
         LIMIT
         #{start}, #{limit}
     </select>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lihao.dao.CareerLoginDao">
+
+    <resultMap id="CareerLoginMessageMap" type="CareerLoginMessage">
+        <result property="userID" column="user_id" jdbcType="INTEGER" javaType="int"/>
+        <result property="userSex" column="user_sex" jdbcType="INTEGER" javaType="int"/>
+        <result property="userCName" column="user_cname" jdbcType="VARCHAR" javaType="String"/>
+        <result property="userPhone" column="user_phone" jdbcType="VARCHAR" javaType="String"/>
+        <result property="userEmail" column="user_email" jdbcType="VARCHAR" javaType="String"/>
+        <result property="userSign" column="user_sign" jdbcType="VARCHAR" javaType="String"/>
+        <result property="userHead" column="user_head" jdbcType="VARCHAR" javaType="String"/>
+        <result property="intentCity" column="intent_city" jdbcType="VARCHAR" javaType="String"/>
+        <result property="intentBusiness" column="intent_business" jdbcType="VARCHAR" javaType="String"/>
+        <result property="intentJob" column="intent_job" jdbcType="VARCHAR" javaType="String"/>
+    </resultMap>
+
+    <select id="loginByCondition" resultMap="CareerLoginMessageMap">
+        SELECT
+          U.user_id, U.user_cname, U.user_phone, U.user_email,
+          R.user_sex, R.user_sign, R.user_head, R.intent_job,
+          R.intent_city, R.intent_business
+        FROM
+          sys_users U LEFT JOIN user_resume R ON U.user_id = R.user_id
+        WHERE
+          U.user_phone = #{userPhone} AND U.user_pwd = #{userPwd}
+    </select>
+</mapper>

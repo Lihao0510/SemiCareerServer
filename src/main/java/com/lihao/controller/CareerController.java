@@ -46,7 +46,7 @@ public class CareerController {
     @RequestMapping(value = "/getcompanydetail", method = RequestMethod.GET)
     @ResponseBody
     public ResponseObject getCompanyDetailByID(@RequestParam("companyID") int jobID) {
-        return careerService.getJobDetailByID(jobID);
+        return careerService.getCompanyDetailByID(jobID);
     }
 
     @RequestMapping(value = "/searchjoblist", method = RequestMethod.POST)
@@ -59,6 +59,12 @@ public class CareerController {
     @ResponseBody
     public ResponseObject searchCompanyByCondition(@RequestParam Map<String, Object> params) {
         return careerService.searchCompanyByCondition(params);
+    }
+
+    @RequestMapping(value = "/getrecommand", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseObject searchRecommandJobByCondition(@RequestParam Map<String, Object> params) {
+        return careerService.searchRecommandJobByCondition(params);
     }
 
 }
